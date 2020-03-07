@@ -1,5 +1,6 @@
 /.gradle/
 /.idea/
+/database/
 /out/
 /neo4j-community-3.5.14-windows/
 
