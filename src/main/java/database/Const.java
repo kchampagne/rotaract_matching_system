@@ -26,6 +26,10 @@ public class Const {
 
     public static final Label ROTARACTOR = Label.label(UserType.Rotaractor.name().toUpperCase());
 
+    public static final Label MATCHED =  Label.label("MATCHED");
+
+    public static final Label UNMATCHED =  Label.label("UNMATCHED");
+
     public static final Label RANKING = Label.label(SurveyType.RANKING.name());
 
     public static final Label RATING = Label.label(SurveyType.RATING.name());
@@ -42,6 +46,10 @@ public class Const {
     public static final RelationshipType RELATE_ROOT_RANKING = RelationshipType.withName(SurveyType.RANKING.name());
 
     public static final RelationshipType RELATE_ROOT_RATING = RelationshipType.withName(SurveyType.RATING.name());
+
+    public static final RelationshipType POSSIBLE_MATCH = RelationshipType.withName("POSSIBLE_MATCH");
+
+    public static final RelationshipType MATCH = RelationshipType.withName("MATCH");
 
     // Possible ranks for "RANKING" questions
     public static final RelationshipType RANK_ONE = RelationshipType.withName("RANK_ONE");
