@@ -1,21 +1,65 @@
 package objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import database.Const;
+
 import java.util.HashMap;
 
+@JsonIgnoreProperties(value={
+        "email",
+        "timestamp",
+        "surveyAnswers",
+        "rankingAnswers",
+        "ratingAnswers"
+})
 public class User {
-    UserType type;
-    String clubName;
-    String email;
-    String name;
-    String timestamp;
-    HashMap<String, Object> surveyAnswers;
-    HashMap<String, Answer> rankingAnswers;
-    HashMap<String, Answer> ratingAnswers;
+    protected String id;
+    protected UserType type;
+    protected String clubName;
+    protected String email;
+    protected String name;
+    protected String timestamp;
+    private HashMap<String, Object> surveyAnswers;
+    private HashMap<String, Answer> rankingAnswers;
+    private HashMap<String, Answer> ratingAnswers;
 
+    public User (final UserType type) {
+        this.type = type;
+    }
+
+    public User (final UserType type, final HashMap<String, Object> node) {
+        this.type = type;
+
+        if (node.containsKey(Const.ID)) {
+            this.id = node.get(Const.ID).toString();
+        } else {
+            throw new IllegalArgumentException("ERROR :: No id is present in node for a " + this.type);
+        }
+        if (node.containsKey(Const.NAME)) {
+            this.name = node.get(Const.NAME).toString();
+        } else {
+            throw new IllegalArgumentException("ERROR :: No name is present in node with id of " +
+                    this.id + " for a " + this.type);
+        }
+        if (node.containsKey(Const.CLUB_NAME)) {
+            this.clubName = node.get(Const.CLUB_NAME).toString();
+        } else {
+            throw new IllegalArgumentException("ERROR :: No club name is present in node with id of " +
+                    this.id + " for " + this.name + " a " + this.type);
+        }
+    }
 
     public enum UserType {
         Rotarian,
         Rotaractor
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public UserType getType() {
