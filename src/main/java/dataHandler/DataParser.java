@@ -41,17 +41,17 @@ public class DataParser {
                     switch (survey.getSurveyType()) {
                         case TIMESTAMP:
                             user.setTimestamp(line[iter]);
-                            answers.put(survey.getName(), line[iter]);
+                            answers.put(Const.TIMESTAMP, line[iter]);
                             iter++;
                             break;
                         case NAME:
                             user.setName(line[iter]);
-                            answers.put(survey.getName(), line[iter]);
+                            answers.put(Const.NAME, line[iter]);
                             iter++;
                             break;
                         case CLUB:
                             user.setClubName(line[iter]);
-                            answers.put(survey.getName(), line[iter]);
+                            answers.put(Const.CLUB_NAME, line[iter]);
                             iter++;
                             break;
                         case RANKING:
