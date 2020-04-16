@@ -13,6 +13,10 @@ public class Const {
 
     public static final String NAME = "name";
 
+    public static final String TIMESTAMP = "timestamp";
+
+    public static final String CLUB_NAME = "clubName";
+
     public static final String SCALE_MAX = "scaleMax";
 
     public static final String SCALE_MIN = "scaleMin";
