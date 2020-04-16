@@ -4,6 +4,7 @@ import objects.*;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,15 +23,30 @@ public class DbFunctions {
         root = database.initRoot();
     }
 
-    public void addRotarians(List<User> rotarians) {
+    public Rotarian readRotarian(final String id) {
+        return new Rotarian(database.readNodeProperties(Const.ROTARIAN, id));
+    }
+
+    public List<Rotarian> readRotarians() {
+        final List<Rotarian> rotarians = new ArrayList<>();
+        final List<Node> nodes = database.readNodes(Const.ROTARIAN);
+
+        for (Node node: nodes) {
+            rotarians.add(new Rotarian(database.readNodeProperties(node)));
+        }
+        
+        return rotarians;
+    }
+
+    public void createRotarians(List<User> rotarians) {
         for (User rotarian: rotarians) {
-            addRotarian((Rotarian) rotarian);
+            createRotarian((Rotarian) rotarian);
         }
         System.out.println("Added Rotarians");
     }
 
-    public void addRotarian(Rotarian rotarian) {
-        Node node = database.createNode(Const.ROTARIAN, rotarian.getSurveyAnswers());
+    public void createRotarian(Rotarian rotarian) {
+        Node node = database.createUser(Const.ROTARIAN, rotarian.getSurveyAnswers());
 
         database.addLabels(node, new Label[] {
                 Const.ROTARIAN,
@@ -45,17 +61,50 @@ public class DbFunctions {
     }
 
     private void matchRotarian(Node node) {
+        // TODO write matching code
     }
 
-    public void addRotaractors(List<User> rotaractors) {
+    public Rotaractor readRotaractor(final String id) {
+        return new Rotaractor(database.readNodeProperties(Const.ROTARACTOR, id));
+    }
+
+    public List<Rotaractor> readRotaractors() {
+        final List<Rotaractor> rotaractors = new ArrayList<>();
+        final List<Node> nodes = database.readNodes(Const.ROTARACTOR);
+
+        for (Node node: nodes) {
+            rotaractors.add(new Rotaractor(database.readNodeProperties(node)));
+        }
+
+        return rotaractors;
+    }
+
+    public List<Rotarian> readPossibleRotarianMatchesForRotaractor(final String id) {
+        List<Rotarian> rotarians = new ArrayList<>();
+
+        Node node = database.readNode(Const.ROTARACTOR, id);
+        if (node == null) {
+            throw new IllegalArgumentException("ERROR :: There is no node for Rotaractor with id of " + id);
+        }
+
+        List<Node> nodes = database.readNodesFromRelationshipsOfType(node, Const.POSSIBLE_MATCH);
+
+        for (Node rotarian : nodes) {
+            rotarians.add(new Rotarian(database.readNodeProperties(rotarian)));
+        }
+
+        return rotarians;
+    }
+
+    public void createRotaractors(List<User> rotaractors) {
         for (User rotaractor: rotaractors) {
-            addRotaractor((Rotaractor) rotaractor);
+            createRotaractor((Rotaractor) rotaractor);
         }
         System.out.println("Added Rotaractors");
     }
 
-    public void addRotaractor(Rotaractor rotaractor) {
-        Node node = database.createNode(Const.ROTARACTOR, rotaractor.getSurveyAnswers());
+    public void createRotaractor(Rotaractor rotaractor) {
+        Node node = database.createUser(Const.ROTARACTOR, rotaractor.getSurveyAnswers());
 
         database.addLabels(node, new Label[] {
                 Const.ROTARACTOR,
@@ -65,6 +114,25 @@ public class DbFunctions {
         handleRelationships(node, rotaractor);
 
         database.createRelationship(root, node, Const.RELATE_ROOT_ROTARACTOR);
+    }
+
+    private void matchRotaractor(Node node) {
+        // TODO write matching code
+    }
+
+    public void makeMatch(final String rotarianId, final String rotaractorId) {
+        Node rotarian = database.readNode(Const.ROTARIAN, rotarianId);
+        if (rotarian == null) {
+            throw new IllegalArgumentException("ERROR :: There is no node for Rotarian with id of " + rotarianId);
+        }
+        Node rotaractor = database.readNode(Const.ROTARACTOR, rotaractorId);
+        if (rotaractor == null) {
+            throw new IllegalArgumentException("ERROR :: There is no node for Rotaractor with id of " + rotaractorId);
+        }
+
+        database.createRelationship(rotarian,
+                rotaractor,
+                Const.MATCH);
     }
 
     public void handleRelationships(Node node, User user) {
