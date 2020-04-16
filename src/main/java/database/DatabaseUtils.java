@@ -123,6 +123,29 @@ public class DatabaseUtils {
         }
     }
 
+    public Node createUser(Label label, HashMap<String, Object> props) {
+        try ( Transaction tx = graphDb.beginTx() ) {
+            //Check for duplicates first
+            if(graphDb.findNode(label, Const.NAME, props.get(Const.NAME)) == null){ //If no copies in DB we create new node
+                Node node = createNode(label, props);
+                if (node != null) {
+                    tx.success();
+                    tx.close();
+                    return node;
+                }
+            } else {
+                Node node = graphDb.findNode(label, Const.NAME, props.get(Const.NAME));
+                updateNode(node, props);
+                tx.success();
+                tx.close();
+                return node;
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("ERROR :: " + e.getMessage());
+        }
+        return null;
+    }
+
     public Node addLabels(Node node, Label[] labels) {
         if (labels != null) {
             return node;
@@ -324,6 +347,24 @@ public class DatabaseUtils {
         return rels;
     }
 
+    public List<Node> readNodesFromRelationshipsOfType(Node node, RelationshipType type){
+        List<Node> nodes = new ArrayList<>();
+
+        try (Transaction tx = graphDb.beginTx()) {
+            tx.acquireReadLock(node);
+            node.getRelationships().iterator().forEachRemaining(rel ->{
+                if (rel.isType(type)) {
+                    nodes.add(rel.getOtherNode(node));
+                }
+            });
+            tx.success();
+        } catch (Exception e) {
+            System.out.println("Unable to get relaionships. Msg:" + e.getMessage());
+        }
+
+        return nodes;
+    }
+
     // TODO
     public List<Relationship> readAllRelationships(){
         List<Relationship> rels = new ArrayList<>();
@@ -376,6 +417,21 @@ public class DatabaseUtils {
         } catch (Exception e) {
             System.out.println("ERROR :: " + e.getMessage());
         }
+    }
+
+    public HashMap<String, Object> readNodeProperties(Label label, String id){
+        HashMap<String, Object> nodeMap = new HashMap<>();
+        Node node = readNode(label, id);
+
+        try(Transaction tx = graphDb.beginTx()){
+            tx.acquireReadLock(node);
+            nodeMap = (HashMap<String, Object>) node.getAllProperties();
+            tx.success();
+        } catch (Exception e) {
+            System.out.println("Unable to map node properties. Msg : " + e.getMessage());
+        }
+
+        return nodeMap;
     }
 
     public HashMap<String, Object> readNodeProperties(Node node){
