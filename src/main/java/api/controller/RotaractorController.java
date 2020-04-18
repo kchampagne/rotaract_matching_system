@@ -16,7 +16,7 @@ public class RotaractorController {
 
     private final DbFunctions dbFunctions = new DbFunctions();
 
-    @GetMapping("/")
+    @GetMapping("")
     public Response getRotaractors() {
         List<Rotaractor> rotaractors = dbFunctions.readRotaractors();
 

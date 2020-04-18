@@ -14,14 +14,14 @@ public class MatchController {
 
     private DbFunctions dbFunctions = new DbFunctions();
 
-    @GetMapping("/rotaractor")
+    @GetMapping("/rotaractor/{id}")
     public List<Rotarian> getPossibleMatches(@RequestParam final String id) {
         return dbFunctions.readPossibleRotarianMatchesForRotaractor(id);
     }
 
-    @PostMapping("")
-    public ResponseEntity createMatch(@RequestParam final String rotarianId,
-                                      @RequestParam final String rotaractorId) {
+    @PostMapping("/{rotaractorId}/{rotarianId}")
+    public ResponseEntity createMatch(@RequestParam final String rotaractorId,
+                                      @RequestParam final String rotarianId) {
         dbFunctions.makeMatch(rotarianId, rotaractorId);
         return new ResponseEntity(HttpStatus.OK);
     }
