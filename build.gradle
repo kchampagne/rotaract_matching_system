@@ -26,6 +26,7 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-dependencies:2.0.5.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-jersey:1.2.0.RELEASE'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.2.32'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -49,4 +50,8 @@ bootJar {
 
 bootRun {
     main = 'api.App'
+}
+
+task ('bootRunDev', type:org.springframework.boot.gradle.tasks.run.BootRun) { 
+    dependsOn('clean', 'bootJar', 'bootRun')
 }
