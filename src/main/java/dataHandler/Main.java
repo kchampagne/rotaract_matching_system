@@ -1,5 +1,6 @@
 package dataHandler;
 
+import database.Const;
 import database.DbFunctions;
 import objects.User;
 import dataHandler.utils.SurveyRegistry;
@@ -7,8 +8,8 @@ import dataHandler.utils.SurveyRegistry;
 import java.util.List;
 
 public class Main {
-    public static String json = "C:\\Users\\the88\\Workspace\\rotaract_matching_system\\src\\main\\resources\\rotarian_survey1-19-2020.json";
-    public static String csv = "C:\\Users\\the88\\Workspace\\rotaract_matching_system\\src\\main\\resources\\rotarian_survey1-19-2020.csv";
+    public static String json = Const.projectDir + "\\src\\main\\resources\\rotarian_survey1-19-2020.json";
+    public static String csv = Const.projectDir + "\\src\\main\\resources\\rotarian_survey1-19-2020.csv";
 
     public static void main(String[] args) {
         initRotarians(json, csv);

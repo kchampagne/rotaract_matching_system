@@ -6,6 +6,12 @@ import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.RelationshipType;
 
 public class Const {
+
+    /**
+     * Misc Utils
+     */
+    public static final String projectDir = System.getProperty("user.dir");
+
     /**
      * Node Properties
      */

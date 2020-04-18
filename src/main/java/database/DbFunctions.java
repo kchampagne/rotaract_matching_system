@@ -11,7 +11,7 @@ import java.util.List;
 public class DbFunctions {
     private static DatabaseUtils database;
     private static Node root;
-    private static String dbPath = "C:\\Users\\the88\\Workspace\\rotaract_matching_system\\database\\graph.db";
+    private static String dbPath = Const.projectDir + "\\database\\graph.db";
 
     public DbFunctions() {
         database = DatabaseUtils.getInstance(dbPath);
