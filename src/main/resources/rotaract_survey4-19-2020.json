@@ -1,0 +1,121 @@
+{
+	"survey": [
+		{
+			"question": "Timestamp",
+			"questionType": "TIMESTAMP"
+		},
+		{
+			"question": "Let's start with the basics- What is your name? ",
+			"questionType": "NAME"
+		},
+		{
+			"question": "What is the name of your Rotaract Club? ",
+			"questionType": "CLUB"
+		},
+		{
+			"question": "Any leadership position(s) in Rotaract? ",
+			"questionType": "LONGANSWER"
+		},
+		{
+			"question": "Tell us about your education background-",
+			"questionType": "LONGANSWER"
+		},
+		{
+			"question": "What is your career or future career? ",
+			"questionType": "LONGANSWER"
+		},
+		{
+			"question": "Rank the following: In what area(s) do you currently most desire mentoring? Please use each number only once! ",
+			"questionType": "RANKING",
+			"options": [
+				"Communication Skills/Professional Writing",
+				"Professional Networking",
+				"Learning more about my desired field ",
+				"Improving my leadership skills",
+				"Project creation and implementation for my Rotaract Club",
+				"Learning skills not taught in formal education"
+			]
+		},
+		{
+			"question": "Rank the following: What is the best way for you to learn new information? ",
+			"questionType": "RANKING",
+			"options": [
+				"Auditory",
+				"Visual",
+				"Kinesthetic "
+			]
+		},
+		{
+			"question": "Rank the following: What is your preferred method of communication? ",
+			"questionType": "RANKING",
+			"options": [
+				"Phone Call",
+				"Email",
+				"Text",
+				"Social Media",
+				"Video Calling",
+				"In Person "
+			]
+		},
+		{
+			"question": "It is important to me that my mentor is within a 30 minute driving range for in-person meet ups.",
+			"questionType": "RATING"
+		},
+		{
+			"question": "It is important to me that my mentor works in a similar career field as myself. ",
+			"questionType": "RATING"
+		},
+		{
+			"question": "It is important to me that my mentor and I are friends ",
+			"questionType": "RATING"
+		},
+		{
+			"question": "This is a Rotaract Questionnaire, so tell us about your Rotaract experiences and goals- how long have you been affiliated with Rotaract? ",
+			"questionType": "LONGANSWER"
+		},
+		{
+			"question": "Are you a dual member with a Rotary Club? If so, which one? ",
+			"questionType": "LONGANSWER"
+		},
+		{
+			"question": "Are you a dual member with a Rotary Club? If so, which one? ",
+			"questionType": "LONGANSWER"
+		},
+		{
+			"question": "What is your 1 year goal with our Rotaract family? ",
+			"questionType": "LONGANSWER"
+		},
+		{
+			"question": "What is your long term goal with our Rotaract family? ",
+			"questionType": "LONGANSWER"
+		},
+		{
+			"question": "What is your perception of the Rotaract-Rotary relationship? ",
+			"questionType": "LONGANSWER"
+		},
+		{
+			"question": "Do you know your Myers-Briggs Personality Type? If so, what is it? If you have done another personality test, tell us about it! ",
+			"questionType": "LONGANSWER"
+		},
+		{
+			"question": "Last part! Let us dive a little deeper about you- What are you looking to most gain for this experience? ",
+			"questionType": "LONGANSWER"
+		},
+		{
+			"question": "What are you career goals? ",
+			"questionType": "LONGANSWER"
+		},
+		{
+			"question": "What would be your dream job? ",
+			"questionType": "LONGANSWER"
+		},
+		{
+			"question": "What is your favorite color? ",
+			"questionType": "LONGANSWER"
+		},
+		{
+			"question": "What is your spirit animal? ",
+			"questionType": "SHORTANSWER"
+		}
+	]
+}
