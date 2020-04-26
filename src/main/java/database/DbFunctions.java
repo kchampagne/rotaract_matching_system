@@ -58,6 +58,10 @@ public class DbFunctions {
         database.createRelationship(root, node, Const.RELATE_ROOT_ROTARIAN);
         
         matchRotarian(node);
+
+        System.out.println("Added Rotarian: {" +
+                rotarian.getName() + "} of {" + rotarian.getClubName() +
+                "} based on data from {" + rotarian.getTimestamp() + "}");
     }
 
     private void matchRotarian(Node node) {
@@ -114,6 +118,10 @@ public class DbFunctions {
         handleRelationships(node, rotaractor);
 
         database.createRelationship(root, node, Const.RELATE_ROOT_ROTARACTOR);
+
+        System.out.println("Added Rotaractor: {" +
+                rotaractor.getName() + "} of {" + rotaractor.getClubName() +
+                "} based on data from {" + rotaractor.getTimestamp() + "}");
     }
 
     private void matchRotaractor(Node node) {

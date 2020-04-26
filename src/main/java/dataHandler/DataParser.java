@@ -15,9 +15,9 @@ import java.util.*;
 public class DataParser {
     private static String cvsSplitBy = "\",\"";
 
-    static List<User> parse(String path, UserType type) {
+    static List<User> parse(final String path, final UserType type) {
         List<User> users = new ArrayList<>();
-        List<Survey> registry = SurveyRegistry.getInstance().getRegistry();
+        List<Survey> registry = getRegistryInstance(type).getRegistry();
         String[] line;
 
         Class<?> clazz = getConstructor(type);
@@ -55,7 +55,7 @@ public class DataParser {
                             iter++;
                             break;
                         case RANKING:
-                            List<String> options = SurveyRegistry.getInstance().getRankingOptions(survey.getName());
+                            List<String> options = getRegistryInstance(type).getRankingOptions(survey.getName());
                             Iterator<String> listIter = options.listIterator();
                             while (listIter.hasNext()) {
                                 rankingAnswers.put(listIter.next(), new Answer<>(Integer.parseInt(line[iter])));
@@ -93,7 +93,15 @@ public class DataParser {
         return users;
     }
 
-    private static Class<?> getConstructor(UserType type) {
+    private static SurveyRegistry getRegistryInstance(final UserType type) {
+        if (type.name().equals(UserType.Rotarian.name())) {
+            return SurveyRegistry.getRotaryInstance();
+        } else {
+            return SurveyRegistry.getRotaractInstance();
+        }
+    }
+
+    private static Class<?> getConstructor(final UserType type) {
         Class<?> clazz = null;
         try {
             clazz = Class.forName("objects." + type.toString());

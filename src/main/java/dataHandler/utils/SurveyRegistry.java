@@ -17,19 +17,27 @@ import java.io.IOException;
 import java.util.*;
 
 public class SurveyRegistry {
-    private static SurveyRegistry instance;
+    private static SurveyRegistry rotary;
+    private static SurveyRegistry rotaract;
     private ArrayList<Survey> registry = new ArrayList<>();
     private HashMap<String, Ranking> rankings = new HashMap<>();
     private HashMap<String, Rating> ratings = new HashMap<>();
 
-    public static SurveyRegistry getInstance() {
-        if (instance == null) {
-            instance = new SurveyRegistry();
+    public static SurveyRegistry getRotaryInstance() {
+        if (rotary == null) {
+            rotary = new SurveyRegistry();
         }
-        return instance;
+        return rotary;
     }
 
-    public void registerFromJson(String path) {
+    public static SurveyRegistry getRotaractInstance() {
+        if (rotaract == null) {
+            rotaract = new SurveyRegistry();
+        }
+        return rotaract;
+    }
+
+    public void registerFromJson(final String path) {
         JSONParser jsonParser = new JSONParser();
 
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
@@ -105,7 +113,7 @@ public class SurveyRegistry {
 
     public Map<String, Ranking> getRankings() { return Collections.unmodifiableMap(rankings); }
 
-    public List<String> getRankingOptions(String rankingName) {
+    public List<String> getRankingOptions(final String rankingName) {
         if (rankings.containsKey(rankingName)) {
             return rankings.get(rankingName).getOptions();
         }

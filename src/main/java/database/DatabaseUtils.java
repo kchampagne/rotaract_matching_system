@@ -136,6 +136,7 @@ public class DatabaseUtils {
             } else {
                 Node node = graphDb.findNode(label, Const.NAME, props.get(Const.NAME));
                 updateNode(node, props);
+                System.out.println("Updated: " + props.get(Const.ID));
                 tx.success();
                 tx.close();
                 return node;

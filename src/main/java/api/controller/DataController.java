@@ -13,7 +13,7 @@ public class DataController {
 
     @PostMapping("/initDefaults/")
     public Response initDefaults(){
-        Main.initRotarians(Main.json, Main.csv);
+        Main.main(new String[] {});
         return Response.ok().build();
     }
 }
