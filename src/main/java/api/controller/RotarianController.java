@@ -2,10 +2,7 @@ package api.controller;
 
 import database.DbFunctions;
 import objects.Rotarian;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -28,7 +25,7 @@ public class RotarianController {
     }
 
     @GetMapping("/{id}")
-    public Response getRotarian(@RequestParam final String id) {
+    public Response getRotarian(@PathVariable final String id) {
         Rotarian rotarian = dbFunctions.readRotarian(id);
 
         if (rotarian != null && rotarian.getId().equals(id)) {
