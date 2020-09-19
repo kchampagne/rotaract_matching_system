@@ -1,7 +1,7 @@
 package database;
 
-import objects.Survey.SurveyType;
-import objects.User.UserType;
+import objects.Question.SurveyType;
+import objects.Participant.ParticipantType;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.RelationshipType;
 
@@ -15,7 +15,13 @@ public class Const {
     /**
      * Node Properties
      */
+    public static final String MATCH_VALUE = "matchValue";
+
     public static final String ID = "id";
+
+    public static final String TYPE = "type";
+
+    public static final String EMAIL = "email";
 
     public static final String NAME = "name";
 
@@ -27,14 +33,27 @@ public class Const {
 
     public static final String SCALE_MIN = "scaleMin";
 
+    public static final String SURVEY_ANSWER = "survey_answer";
+
+    public static final String WEIGHTED_ANSWER = "weighted_answer";
+
+    /**
+     * Serialize Format
+     */
+    public static final String NODE_SERIALIZE_FORMAT = "%s_%s";
+
     /**
      * Database Labels
      */
     public static final Label ROOT_LABEL = Label.label("ROOT");
 
-    public static final Label ROTARIAN = Label.label(UserType.Rotarian.name().toUpperCase());
+    public static final Label ROTARACTOR_MATCH = Label.label("ROTARACTOR_MATCH");
 
-    public static final Label ROTARACTOR = Label.label(UserType.Rotaractor.name().toUpperCase());
+    public static final Label ROTARIAN_MATCH = Label.label("ROTARIAN_MATCH");
+
+    public static final Label ROTARIAN = Label.label(ParticipantType.Rotarian.name().toUpperCase());
+
+    public static final Label ROTARACTOR = Label.label(ParticipantType.Rotaractor.name().toUpperCase());
 
     public static final Label MATCHED =  Label.label("MATCHED");
 
@@ -47,11 +66,13 @@ public class Const {
     /**
      * Database Relationships
      */
+    public static final RelationshipType ROOT_MATCH_VALUES = RelationshipType.withName("ROOT_MATCH_VALUES");
+
     public static final RelationshipType RELATE_ROOT_ROTARIAN =
-            RelationshipType.withName(UserType.Rotarian.name().toUpperCase());
+            RelationshipType.withName(ParticipantType.Rotarian.name().toUpperCase());
 
     public static final RelationshipType RELATE_ROOT_ROTARACTOR =
-            RelationshipType.withName(UserType.Rotaractor.name().toUpperCase());
+            RelationshipType.withName(ParticipantType.Rotaractor.name().toUpperCase());
 
     public static final RelationshipType RELATE_ROOT_RANKING = RelationshipType.withName(SurveyType.RANKING.name());
 
@@ -70,7 +91,7 @@ public class Const {
 
 //    private static Map<String, Label> labels = new HashMap<>();
 //    {
-//        for (UserType userType: UserType.values()) {
+//        for (ParticipantType userType: ParticipantType.values()) {
 //            String type = userType.name();
 //            labels.put(type, Label.label(type));
 //        }

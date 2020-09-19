@@ -2,12 +2,12 @@ package objects;
 
 import java.util.HashMap;
 
-public class Rotarian extends User {
+public class Rotarian extends Participant {
     public Rotarian () {
-        super(UserType.Rotarian);
+        super(ParticipantType.Rotarian);
     }
 
     public Rotarian (final HashMap<String, Object> node) {
-        super(UserType.Rotarian, node);
+        super(ParticipantType.Rotarian, node);
     }
 }

@@ -1,12 +1,11 @@
 package database;
 
+import com.google.common.collect.LinkedListMultimap;
 import objects.*;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class DbFunctions {
     private static DatabaseUtils database;
@@ -15,12 +14,12 @@ public class DbFunctions {
 
     public DbFunctions() {
         database = DatabaseUtils.getInstance(dbPath);
-        root = database.initRoot();
+        root = database.init();
     }
 
     public DbFunctions(String path) {
         database = DatabaseUtils.getInstance(path);
-        root = database.initRoot();
+        root = database.init();
     }
 
     public Rotarian readRotarian(final String id) {
@@ -38,34 +37,39 @@ public class DbFunctions {
         return rotarians;
     }
 
-    public void createRotarians(List<User> rotarians) {
-        for (User rotarian: rotarians) {
+    public void createRotarians(List<Participant> rotarians) {
+        for (Participant rotarian: rotarians) {
             createRotarian((Rotarian) rotarian);
         }
         System.out.println("Added Rotarians");
     }
 
     public void createRotarian(Rotarian rotarian) {
-        Node node = database.createUser(Const.ROTARIAN, rotarian.getSurveyAnswers());
+        Node node = database.createParticipant(Const.ROTARIAN, rotarian.getInfoMap());
 
         database.addLabels(node, new Label[] {
                 Const.ROTARIAN,
                 Label.label(rotarian.getName().toUpperCase())
         });
 
-        handleRelationships(node, rotarian);
-
         database.createRelationship(root, node, Const.RELATE_ROOT_ROTARIAN);
         
-        matchRotarian(node);
+        matchRotarian(node, rotarian.getId(), rotarian.getMatchValue());
 
         System.out.println("Added Rotarian: {" +
                 rotarian.getName() + "} of {" + rotarian.getClubName() +
                 "} based on data from {" + rotarian.getTimestamp() + "}");
     }
 
-    private void matchRotarian(Node node) {
-        // TODO write matching code
+    private void matchRotarian(Node rotarian, String id, double matchValue) {
+        database.addRotarianMatchValue(id, matchValue);
+        HashMap<Double, String> values = database.readRotaractorMatchValues();
+        List<String> possibleMatches = findPossibleMatches(values, matchValue);
+
+        for (String possibleMatch: possibleMatches) {
+            Node rotaractor = database.readNode(Const.ROTARACTOR, possibleMatch);
+            database.createRelationship(rotaractor, rotarian, Const.POSSIBLE_MATCH);
+        }
     }
 
     public Rotaractor readRotaractor(final String id) {
@@ -100,32 +104,39 @@ public class DbFunctions {
         return rotarians;
     }
 
-    public void createRotaractors(List<User> rotaractors) {
-        for (User rotaractor: rotaractors) {
+    public void createRotaractors(List<Participant> rotaractors) {
+        for (Participant rotaractor: rotaractors) {
             createRotaractor((Rotaractor) rotaractor);
         }
         System.out.println("Added Rotaractors");
     }
 
     public void createRotaractor(Rotaractor rotaractor) {
-        Node node = database.createUser(Const.ROTARACTOR, rotaractor.getSurveyAnswers());
+        Node node = database.createParticipant(Const.ROTARACTOR, rotaractor.getInfoMap());
 
         database.addLabels(node, new Label[] {
                 Const.ROTARACTOR,
                 Label.label(rotaractor.getName().toUpperCase())
         });
 
-        handleRelationships(node, rotaractor);
-
         database.createRelationship(root, node, Const.RELATE_ROOT_ROTARACTOR);
+
+        matchRotaractor(node, rotaractor.getId(), rotaractor.getMatchValue());
 
         System.out.println("Added Rotaractor: {" +
                 rotaractor.getName() + "} of {" + rotaractor.getClubName() +
                 "} based on data from {" + rotaractor.getTimestamp() + "}");
     }
 
-    private void matchRotaractor(Node node) {
-        // TODO write matching code
+    private void matchRotaractor(Node rotaractor, String id, double matchValue) {
+        database.addRotaractorMatchValue(id, matchValue);
+        HashMap<Double, String> values = database.readRotarianMatchValues();
+        List<String> possibleMatches = findPossibleMatches(values, matchValue);
+
+        for (String possibleMatch: possibleMatches) {
+            Node rotarian = database.readNode(Const.ROTARIAN, possibleMatch);
+            database.createRelationship(rotaractor, rotarian, Const.POSSIBLE_MATCH);
+        }
     }
 
     public void makeMatch(final String rotarianId, final String rotaractorId) {
@@ -143,65 +154,48 @@ public class DbFunctions {
                 Const.MATCH);
     }
 
-    public void handleRelationships(Node node, User user) {
-        HashMap<String, Answer> rankingAnswers = user.getRankingAnswers();
-        for (String key: rankingAnswers.keySet()) {
-            createRelationshipToRanking(key, node, (int) rankingAnswers.get(key).getValue());
+    private List<String> findPossibleMatches(HashMap<Double, String> values, double matchValue) {
+        List<String> possibleMatches = new ArrayList<>();
+        Set<Double> keys = values.keySet();
+        List<Double> list = new ArrayList(keys);
+        List<Double> distances = new ArrayList<>();
+        List<Double> distancesClone = new ArrayList<>();
+
+        for (int index = 0; index < list.size(); index++) {
+            double distance = getDistanceBetween(matchValue, list.get(index));
+            distances.add(distance);
+            distancesClone.add(distance);
         }
 
-        HashMap<String, Answer> ratingAnswers = user.getRatingAnswers();
-        for (String key: ratingAnswers.keySet()) {
-            createRelationshipToRanking(key, node, (int) ratingAnswers.get(key).getValue());
-        }
-    }
-
-    public void createRelationshipToRanking(String rankingName, Node node, int rank) {
-        if (database.findNode(Const.RANKING, rankingName)) {
-            Node ranking = database.readNode(Const.RANKING, rankingName);
-
-            createRelationshipForRanking(ranking, node, rank);
-        }
-    }
-
-    public void createRelationshipToRating(String ratingName, Node node, int rank) {
-        if (database.findNode(Const.RATING, ratingName)) {
-            Node ranking = database.readNode(Const.RATING, ratingName);
-
-            createRelationshipForRanking(ranking, node, rank);
-        }
-    }
-
-    public void createRelationshipForRanking(Node survey, Node node, int rank) {
-        switch (rank) {
-            case 1:
-                database.createRelationship(survey, node, Const.RANK_ONE);
-                break;
-            case 2:
-                database.createRelationship(survey, node, Const.RANK_TWO);
-                break;
-            case 3:
-                database.createRelationship(survey, node, Const.RANK_THREE);
-                break;
-            case 4:
-                database.createRelationship(survey, node, Const.RANK_FOUR);
-                break;
-            case 5:
-                database.createRelationship(survey, node, Const.RANK_FIVE);
-                break;
-            default:
-                throw new IllegalArgumentException("ERROR :: There is no RelationshipType for rank:" + rank);
-        }
-    }
-
-    public void findOrAddNode(Label label, HashMap<String, Object> map) {
-        if (database.findNode(label, map.get(Const.ID).toString())) {
-            Node node = database.createNode(label, map);
-
-            if (label.name().equals(Survey.SurveyType.RANKING.name())) {
-                database.createRelationship(root, node, Const.RELATE_ROOT_RANKING);
-            } else if (label.name().equals(Survey.SurveyType.RATING.name())) {
-                database.createRelationship(root, node, Const.RELATE_ROOT_RATING);
+        Collections.sort(distances, new Comparator<Double>() {
+            @Override
+            public int compare(Double o1, Double o2) {
+                return o1.compareTo(o2);
             }
+        });
+
+        int K;
+        if (list.size() <= 3) {
+            K = list.size();
+        } else {
+            K = 3;
         }
+
+        List<Double> shortestDistances = distances.subList(0 , K);
+        for (double element : shortestDistances) {
+            Integer indexOnClone = distancesClone.indexOf(element);
+            possibleMatches.add(values.get(list.get(indexOnClone)));
+        }
+
+        return possibleMatches;
+    }
+
+    private double getDistanceBetween(double x1, double x2) {
+//        long x1 = Math.round(dataElement1);
+//        long x2 = Math.round(dataElement2);
+        double term = (x2 - x1) * (x2 - x1);
+        double distance = Math.abs(Math.sqrt(term));
+        String convertedDistance = Double.toString(distance);
+        return Double.parseDouble(convertedDistance);
     }
 }

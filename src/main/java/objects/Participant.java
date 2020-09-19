@@ -1,39 +1,53 @@
 package objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import database.Const;
+import scala.collection.immutable.Stream;
 
 import java.util.HashMap;
+import java.util.List;
 
 @JsonIgnoreProperties(value={
+        "matchValue",
         "email",
         "timestamp",
-        "surveyAnswers",
-        "rankingAnswers",
-        "ratingAnswers"
+        "weightedAnswers"
 })
-public class User {
+public class Participant {
+    @JsonProperty(value = "id")
     protected String id;
-    protected UserType type;
+    @JsonProperty(value = "type")
+    protected ParticipantType type;
+    @JsonProperty(value = "clubName")
     protected String clubName;
-    protected String email;
+    @JsonProperty(value = "name")
     protected String name;
-    protected String timestamp;
+    @JsonProperty(value = "surveyAnswers")
     private HashMap<String, Object> surveyAnswers;
-    private HashMap<String, Answer> rankingAnswers;
-    private HashMap<String, Answer> ratingAnswers;
 
-    public User (final UserType type) {
+    protected String email;
+    protected String timestamp;
+    protected double matchValue = 0;
+    private HashMap<String, Double> weightedAnswers;
+
+    public Participant(final ParticipantType type) {
         this.type = type;
     }
 
-    public User (final UserType type, final HashMap<String, Object> node) {
+    public Participant(final ParticipantType type, final HashMap<String, Object> node) {
         this.type = type;
 
         if (node.containsKey(Const.ID)) {
             this.id = node.get(Const.ID).toString();
         } else {
             throw new IllegalArgumentException("ERROR :: No id is present in node for a " + this.type);
+        }
+        if (node.containsKey(Const.TYPE)) {
+            this.type = ParticipantType.valueOf(node.get(Const.TYPE).toString());
+        } else {
+            throw new IllegalArgumentException("ERROR :: No type is present in node for a " + this.type);
         }
         if (node.containsKey(Const.NAME)) {
             this.name = node.get(Const.NAME).toString();
@@ -47,11 +61,26 @@ public class User {
             throw new IllegalArgumentException("ERROR :: No club name is present in node with id of " +
                     this.id + " for " + this.name + " a " + this.type);
         }
+
+        this.surveyAnswers = new HashMap<>();
+        for (String key: node.keySet()) {
+            if (key.startsWith(Const.SURVEY_ANSWER)) {
+                this.surveyAnswers.put(key.substring(Const.SURVEY_ANSWER.length()+1), node.get(key));
+            }
+        }
     }
 
-    public enum UserType {
+    public enum ParticipantType {
         Rotarian,
         Rotaractor
+    }
+
+    public void setMatchValue(final double weightedValue) {
+        matchValue = Math.round(weightedValue * 1000.0) / 1000.0;
+    }
+
+    public double getMatchValue() {
+        return matchValue;
     }
 
     public String getId() {
@@ -62,11 +91,11 @@ public class User {
         this.id = id;
     }
 
-    public UserType getType() {
+    public ParticipantType getType() {
         return type;
     }
 
-    public void setType(UserType type) {
+    public void setType(ParticipantType type) {
         this.type = type;
     }
 
@@ -110,19 +139,36 @@ public class User {
         this.surveyAnswers = surveyAnswers;
     }
 
-    public HashMap<String, Answer> getRankingAnswers() {
-        return rankingAnswers;
+    public HashMap<String, Double> getWeightedAnswers() {
+        return weightedAnswers;
     }
 
-    public void setRankingAnswers(HashMap<String, Answer> rankingAnswers) {
-        this.rankingAnswers = rankingAnswers;
+    public void setWeightedAnswers(HashMap<String, Double> weightedAnswers) {
+        this.weightedAnswers = weightedAnswers;
     }
 
-    public HashMap<String, Answer> getRatingAnswers() {
-        return ratingAnswers;
-    }
+    @JsonIgnore
+    public HashMap<String, Object> getInfoMap() {
+        HashMap<String, Object> infoMap = new HashMap<>();
+        
+        infoMap.put(Const.MATCH_VALUE, matchValue);
+        infoMap.put(Const.ID, id);
+        infoMap.put(Const.TYPE, type.toString());
+        infoMap.put(Const.CLUB_NAME, clubName);
+        if (email != null) {
+            infoMap.put(Const.EMAIL, email);
+        }
+        infoMap.put(Const.NAME, name);
+        infoMap.put(Const.TIMESTAMP, timestamp);
+        
+        for (String key: surveyAnswers.keySet()) {
+            infoMap.put(String.format(Const.NODE_SERIALIZE_FORMAT, Const.SURVEY_ANSWER, key), surveyAnswers.get(key));
+        }
 
-    public void setRatingAnswers(HashMap<String, Answer> ratingAnswers) {
-        this.ratingAnswers = ratingAnswers;
+        for (String key: weightedAnswers.keySet()) {
+            infoMap.put(String.format(Const.NODE_SERIALIZE_FORMAT, Const.WEIGHTED_ANSWER, key), weightedAnswers.get(key));
+        }
+        
+        return infoMap;
     }
 }

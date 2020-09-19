@@ -1,6 +1,6 @@
 package objects;
 
-public class Survey {
+public class Question {
     String name;
     SurveyType surveyType;
 
@@ -14,7 +14,7 @@ public class Survey {
         TIMESTAMP,
     }
 
-    public Survey (String name, SurveyType surveyType) {
+    public Question(String name, SurveyType surveyType) {
         this.name = name;
         this.surveyType = surveyType;
     }

@@ -1,5 +1,6 @@
 package database;
 
+import com.google.common.collect.LinkedListMultimap;
 import org.neo4j.graphdb.*;
 import org.neo4j.graphdb.factory.*;
 
@@ -13,6 +14,8 @@ import static org.neo4j.graphdb.Direction.OUTGOING;
 public class DatabaseUtils {
     private static DatabaseUtils databaseUtils;
     private Node root;
+    private Node rotaractor_match;
+    private Node rotarian_match;
     private GraphDatabaseService graphDb;
 
     public static DatabaseUtils getInstance(String dbPath) {
@@ -46,7 +49,7 @@ public class DatabaseUtils {
         } );
     }
 
-    public Node initRoot() {
+    public Node init() {
         try (Transaction tx = graphDb.beginTx()) {
             if (graphDb.findNodes(Const.ROOT_LABEL).hasNext()) {
                 root = graphDb.findNodes(Const.ROOT_LABEL).next();
@@ -54,6 +57,22 @@ public class DatabaseUtils {
                 root = graphDb.createNode(Const.ROOT_LABEL);
                 root.setProperty(Const.ID, "root");
                 System.out.println("New root created.");
+            }
+            if (graphDb.findNodes(Const.ROTARACTOR_MATCH).hasNext()) {
+                rotaractor_match = graphDb.findNodes(Const.ROTARACTOR_MATCH).next();
+            } else {
+                rotaractor_match = graphDb.createNode(Const.ROTARACTOR_MATCH);
+                rotaractor_match.setProperty(Const.ID, "rotaractor_match");
+                createRelationship(root, rotaractor_match, Const.ROOT_MATCH_VALUES);
+                System.out.println("New rotaractor match map node.");
+            }
+            if (graphDb.findNodes(Const.ROTARIAN_MATCH).hasNext()) {
+                rotarian_match = graphDb.findNodes(Const.ROTARIAN_MATCH).next();
+            } else {
+                rotarian_match = graphDb.createNode(Const.ROTARIAN_MATCH);
+                rotarian_match.setProperty(Const.ID, "rotarian_match");
+                createRelationship(root, rotarian_match, Const.ROOT_MATCH_VALUES);
+                System.out.println("New rotarian match map node");
             }
             tx.success();
             return root;
@@ -64,7 +83,7 @@ public class DatabaseUtils {
         return null;
     }
 
-    public Node initRoot(String uuid) {
+    public Node init(String uuid) {
         try (Transaction tx = graphDb.beginTx()) {
             if(graphDb.findNodes(Const.ROOT_LABEL).hasNext()){
                 root = graphDb.findNodes(Const.ROOT_LABEL).next();
@@ -123,7 +142,7 @@ public class DatabaseUtils {
         }
     }
 
-    public Node createUser(Label label, HashMap<String, Object> props) {
+    public Node createParticipant(Label label, HashMap<String, Object> props) {
         try ( Transaction tx = graphDb.beginTx() ) {
             //Check for duplicates first
             if(graphDb.findNode(label, Const.NAME, props.get(Const.NAME)) == null){ //If no copies in DB we create new node
@@ -145,6 +164,60 @@ public class DatabaseUtils {
             System.out.println("ERROR :: " + e.getMessage());
         }
         return null;
+    }
+
+    public void addRotaractorMatchValue(String nodeId, double value) {
+        try ( Transaction tx = graphDb.beginTx() ) {
+            tx.acquireWriteLock(rotaractor_match);
+            rotaractor_match.setProperty(nodeId, value);
+            tx.success();
+        } catch (IllegalArgumentException e) {
+            System.out.println("ERROR :: " + e.getMessage());
+        }
+    }
+
+    public HashMap<Double, String> readRotaractorMatchValues() {
+        HashMap<Double, String> values = new HashMap<>();
+        try ( Transaction tx = graphDb.beginTx() ) {
+            tx.acquireReadLock(rotaractor_match);
+            Map<String, Object> map = rotaractor_match.getAllProperties();
+            map.remove(Const.ID);
+            for (String key: map.keySet()) {
+                values.put((Double) map.get(key), key);
+            }
+            tx.success();
+        } catch (IllegalArgumentException e) {
+            System.out.println("ERROR :: " + e.getMessage());
+        }
+
+        return values;
+    }
+
+    public void addRotarianMatchValue(String nodeId, double value) {
+        try ( Transaction tx = graphDb.beginTx() ) {
+            tx.acquireWriteLock(rotarian_match);
+            rotarian_match.setProperty(nodeId, value);
+            tx.success();
+        } catch (IllegalArgumentException e) {
+            System.out.println("ERROR :: " + e.getMessage());
+        }
+    }
+
+    public HashMap<Double, String> readRotarianMatchValues() {
+        HashMap<Double, String> values = new HashMap<>();
+        try ( Transaction tx = graphDb.beginTx() ) {
+            tx.acquireReadLock(rotarian_match);
+            Map<String, Object> map = rotarian_match.getAllProperties();
+            map.remove(Const.ID);
+            for (String key: map.keySet()) {
+                values.put((Double) map.get(key), key);
+            }
+            tx.success();
+        } catch (IllegalArgumentException e) {
+            System.out.println("ERROR :: " + e.getMessage());
+        }
+
+        return values;
     }
 
     public Node addLabels(Node node, Label[] labels) {

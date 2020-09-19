@@ -2,11 +2,11 @@ package objects;
 
 import java.util.List;
 
-public class Ranking extends Survey {
+public class Ranking extends WeightedQuestion {
     private List<String> options;
 
-    public Ranking (String name, SurveyType surveyType, List<String> options) {
-        super(name, surveyType);
+    public Ranking (final String name, final SurveyType surveyType, final double weight, final List<String> options) {
+        super(name, surveyType, weight);
 
         this.options = options;
     }

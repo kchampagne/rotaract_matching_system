@@ -13,5 +13,5 @@ The Rotaract Matching System will facilitate the matching of Rotarians and Rotar
 	1. The swagger documentation is located at 'https://localhost:8080/'
 1. Make a 'post' request to 'https://localhost:8080/data/initDefaults/'
 	1. This will initialize the database based on the following:
-        * The Rotarian responses csv file and Rotarian survey questions json
-        * The Rotaractor responses csv file and Rotaractor survey questions json
+        * The Rotarian responses csv file and Rotarian question questions json
+        * The Rotaractor responses csv file and Rotaractor question questions json

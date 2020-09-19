@@ -2,7 +2,7 @@ package dataHandler;
 
 import database.Const;
 import database.DbFunctions;
-import objects.User;
+import objects.Participant;
 import dataHandler.utils.SurveyRegistry;
 
 import java.util.List;
@@ -22,15 +22,15 @@ public class Main {
         DbFunctions db = new DbFunctions();
 
         SurveyRegistry.getRotaryInstance().registerFromJson(json);
-        List<User> users = DataParser.parse(csv, User.UserType.Rotarian);
-        db.createRotarians(users);
+        List<Participant> participants = DataParser.parse(csv, Participant.ParticipantType.Rotarian);
+        db.createRotarians(participants);
     }
 
     public static void initRotaractors(final String json, final String csv) {
         DbFunctions db = new DbFunctions();
 
         SurveyRegistry.getRotaractInstance().registerFromJson(json);
-        List<User> users = DataParser.parse(csv, User.UserType.Rotaractor);
-        db.createRotaractors(users);
+        List<Participant> participants = DataParser.parse(csv, Participant.ParticipantType.Rotaractor);
+        db.createRotaractors(participants);
     }
 }

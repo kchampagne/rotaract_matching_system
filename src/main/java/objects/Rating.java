@@ -1,11 +1,11 @@
 package objects;
 
-public class Rating extends Survey {
+public class Rating extends WeightedQuestion {
     private int scaleMin = 1;
     private int scaleMax = 5;
 
-    public Rating (String name, SurveyType surveyType) {
-        super(name, surveyType);
+    public Rating (final String name, final SurveyType surveyType, final double weight) {
+        super(name, surveyType, weight);
     }
 
     public int getScaleMin() {

@@ -2,31 +2,32 @@
 	"survey": [
 		{
 			"question": "Timestamp",
-			"questionType": "TIMESTAMP"
+			"type": "TIMESTAMP"
 		},
 		{
 			"question": "Let's start with the basics- What is your name? ",
-			"questionType": "NAME"
+			"type": "NAME"
 		},
 		{
 			"question": "What is the name of your Rotaract Club? ",
-			"questionType": "CLUB"
+			"type": "CLUB"
 		},
 		{
 			"question": "Any leadership position(s) in Rotaract? ",
-			"questionType": "LONGANSWER"
+			"type": "LONGANSWER"
 		},
 		{
 			"question": "Tell us about your education background ",
-			"questionType": "LONGANSWER"
+			"type": "LONGANSWER"
 		},
 		{
 			"question": "What is your career or future career? ",
-			"questionType": "LONGANSWER"
+			"type": "LONGANSWER"
 		},
 		{
 			"question": "Rank the following: In what area(s) do you currently most desire mentoring? Please use each number only once! ",
-			"questionType": "RANKING",
+			"type": "RANKING",
+			"weight": 0.90,
 			"options": [
 				"Communication Skills/Professional Writing",
 				"Professional Networking",
@@ -38,7 +39,8 @@
 		},
 		{
 			"question": "Rank the following: What is the best way for you to learn new information? ",
-			"questionType": "RANKING",
+			"type": "RANKING",
+			"weight": 0.80,
 			"options": [
 				"Auditory",
 				"Visual",
@@ -47,7 +49,8 @@
 		},
 		{
 			"question": "Rank the following: What is your preferred method of communication? ",
-			"questionType": "RANKING",
+			"type": "RANKING",
+			"weight": 0.84,
 			"options": [
 				"Phone Call",
 				"Email",
@@ -59,63 +62,66 @@
 		},
 		{
 			"question": "It is important to me that my mentor is within a 30 minute driving range for in-person meet ups.",
-			"questionType": "RATING"
+			"weight": 0.4,
+			"type": "RATING"
 		},
 		{
 			"question": "It is important to me that my mentor works in a similar career field as myself. ",
-			"questionType": "RATING"
+			"weight": 0.45,
+			"type": "RATING"
 		},
 		{
 			"question": "It is important to me that my mentor and I are friends ",
-			"questionType": "RATING"
+			"weight": 0.2,
+			"type": "RATING"
 		},
 		{
 			"question": "This is a Rotaract Questionnaire, so tell us about your Rotaract experiences and goals- how long have you been affiliated with Rotaract? ",
-			"questionType": "LONGANSWER"
+			"type": "LONGANSWER"
 		},
 		{
 			"question": "Are you a dual member with a Rotary Club? If so, which one? ",
-			"questionType": "LONGANSWER"
+			"type": "LONGANSWER"
 		},
 		{
 			"question": "Are you a dual member with a Rotary Club? If so, which one? ",
-			"questionType": "LONGANSWER"
+			"type": "LONGANSWER"
 		},
 		{
 			"question": "What is your 1 year goal with our Rotaract family? ",
-			"questionType": "LONGANSWER"
+			"type": "LONGANSWER"
 		},
 		{
 			"question": "What is your long term goal with our Rotaract family? ",
-			"questionType": "LONGANSWER"
+			"type": "LONGANSWER"
 		},
 		{
 			"question": "What is your perception of the Rotaract-Rotary relationship? ",
-			"questionType": "LONGANSWER"
+			"type": "LONGANSWER"
 		},
 		{
 			"question": "Do you know your Myers-Briggs Personality Type? If so, what is it? If you have done another personality test, tell us about it! ",
-			"questionType": "LONGANSWER"
+			"type": "LONGANSWER"
 		},
 		{
 			"question": "Last part! Let us dive a little deeper about you- What are you looking to most gain for this experience? ",
-			"questionType": "LONGANSWER"
+			"type": "LONGANSWER"
 		},
 		{
 			"question": "What are you career goals? ",
-			"questionType": "LONGANSWER"
+			"type": "LONGANSWER"
 		},
 		{
 			"question": "What would be your dream job? ",
-			"questionType": "LONGANSWER"
+			"type": "LONGANSWER"
 		},
 		{
 			"question": "What is your favorite color? ",
-			"questionType": "LONGANSWER"
+			"type": "LONGANSWER"
 		},
 		{
 			"question": "What is your spirit animal? ",
-			"questionType": "SHORTANSWER"
+			"type": "SHORTANSWER"
 		}
 	]
 }

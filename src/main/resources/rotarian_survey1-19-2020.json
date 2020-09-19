@@ -2,31 +2,32 @@
   "survey": [
     {
       "question": "Timestamp",
-      "questionType": "TIMESTAMP"
+      "type": "TIMESTAMP"
     },
     {
       "question": "Let's start with the basics: What is your name? ",
-      "questionType": "NAME"
+      "type": "NAME"
       
     },
     {
       "question": "Which Rotary Club are you affiliated with? ",
-      "questionType": "CLUB"
+      "type": "CLUB"
       
     },
     {
       "question": "What are your current/former leadership position(s) in Rotary? ",
-      "questionType": "LONGANSWER"
+      "type": "LONGANSWER"
       
     },
     {
       "question": "What is your current or former career? ",
-      "questionType": "SHORTANSWER"
+      "type": "SHORTANSWER"
       
     },
     {
       "question": "Rank the following- In what areas do you currently most desire to mentor? Please use each number once only! ",
-      "questionType": "RANKING",
+      "type": "RANKING",
+      "weight": 0.9,
       "options": [
         "Resume Review",
         "Professional Networking",
@@ -38,7 +39,8 @@
     },
     {
       "question": "Rank the following- what is the best way for you to learn new information? ",
-      "questionType": "RANKING",
+      "weight": 0.8,
+      "type": "RANKING",
       "options": [
         "Auditory",
         "Visual",
@@ -47,7 +49,8 @@
     },
     {
       "question": "Rank the following- what is your preferred method of communication? ",
-      "questionType": "RANKING",
+      "type": "RANKING",
+      "weight": 0.84,
       "options": [
         "Phone Call",
         "Email",
@@ -59,63 +62,66 @@
     },
     {
       "question": "It is important to me that my mentee is within 30 minute driving range for in-person meet ups. ",
-      "questionType": "RATING"
+      "weight": 0.4,
+      "type": "RATING"
     },
     {
       "question": "It is important to me that my mentee works/will work in a similar career field as me. ",
-      "questionType": "RATING"
+      "weight": 0.45,
+      "type": "RATING"
     },
     {
       "question": "It is important to me that me that my mentee and I are friends. ",
-      "questionType": "RATING"
+      "weight": 0.2,
+      "type": "RATING"
     },
     {
       "question": "This is a Rotaract-Rotary Mentoring Questionnaire, so tell us about your Rotary experiences and goals: How long have you been affiliated with Rotary? ",
-      "questionType": "LONGANSWER"
+      "type": "LONGANSWER"
     },
     {
       "question": "What position(s) have you held with Rotary? ",
-      "questionType": "LONGANSWER"
+      "type": "LONGANSWER"
     },
     {
       "question": "What is your 1 year goal with Rotary? ",
-      "questionType": "LONGANSWER"
+      "type": "LONGANSWER"
     },
     {
       "question": "What is your long term goal with Rotary? ",
-      "questionType": "LONGANSWER"
+      "type": "LONGANSWER"
     },
     {
       "question": "What is your perception of the Rotaract-Rotary relationship? ",
-      "questionType": "LONGANSWER"
+      "type": "LONGANSWER"
     },
     {
       "question": "Do you know your Myers-Briggs Personality Type? If so what is it? If you have done another personality test, tell us about it! ",
-      "questionType": "LONGANSWER"
+      "type": "LONGANSWER"
     },
     {
       "question": "Last part! Let us dive a little deeper about you- What are you looking to most gain from this experience? ",
-      "questionType": "LONGANSWER"
+      "type": "LONGANSWER"
     },
     {
       "question": "What are your career aspirations? ",
-      "questionType": "LONGANSWER"
+      "type": "LONGANSWER"
     },
     {
       "question": "What would be your dream job? ",
-      "questionType": "LONGANSWER"
+      "type": "LONGANSWER"
     },
     {
       "question": "What is your favorite color? ",
-      "questionType": "LONGANSWER"
+      "type": "LONGANSWER"
     },
     {
       "question": "What is the color of your aura? ",
-      "questionType": "LONGANSWER"
+      "type": "LONGANSWER"
     },
     {
       "question": "What is your spirit animal? ",
-      "questionType": "SHORTANSWER"
+      "type": "SHORTANSWER"
     }
   ]
 }
