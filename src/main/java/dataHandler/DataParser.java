@@ -2,7 +2,6 @@ package dataHandler;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import database.Const;
 import objects.Participant;
 import objects.Question;
 import objects.Participant.ParticipantType;
@@ -18,7 +17,16 @@ import java.util.*;
 public class DataParser {
     private static String cvsSplitBy = "\",\"";
 
-    static List<Participant> parse(final String path, final ParticipantType type) {
+    static List<Participant> parseFromPath(final String path, final ParticipantType type) {
+        try {
+            return parse(new FileReader(path), type);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    public static List<Participant> parse(final Reader fileReader, final ParticipantType type) {
         List<Participant> participants = new ArrayList<>();
         List<Question> registry = getRegistryInstance(type).getRegistry();
         String[] line;
@@ -26,7 +34,7 @@ public class DataParser {
         Class<?> clazz = getConstructor(type);
 
         try {
-            CSVReader reader = new CSVReader(new FileReader(path));
+            CSVReader reader = new CSVReader(fileReader);
 
             // skip line one with question names
             reader.readNext();

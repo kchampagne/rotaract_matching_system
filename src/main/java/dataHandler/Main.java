@@ -22,7 +22,7 @@ public class Main {
         DbFunctions db = new DbFunctions();
 
         SurveyRegistry.getRotaryInstance().registerFromJson(json);
-        List<Participant> participants = DataParser.parse(csv, Participant.ParticipantType.Rotarian);
+        List<Participant> participants = DataParser.parseFromPath(csv, Participant.ParticipantType.Rotarian);
         db.createRotarians(participants);
     }
 
@@ -30,7 +30,7 @@ public class Main {
         DbFunctions db = new DbFunctions();
 
         SurveyRegistry.getRotaractInstance().registerFromJson(json);
-        List<Participant> participants = DataParser.parse(csv, Participant.ParticipantType.Rotaractor);
+        List<Participant> participants = DataParser.parseFromPath(csv, Participant.ParticipantType.Rotaractor);
         db.createRotaractors(participants);
     }
 }
