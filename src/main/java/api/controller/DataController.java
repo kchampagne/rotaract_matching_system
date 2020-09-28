@@ -8,10 +8,7 @@ import database.DbFunctions;
 import objects.Participant;
 import objects.Participant.ParticipantType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
@@ -55,5 +52,17 @@ public class DataController {
         }
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/questions")
+    public ResponseEntity<List<String>> getQuestions(@RequestParam(name = "type", required = true) final String typeStr) {
+        ParticipantType type = ParticipantType.valueOf(typeStr);
+        if (type.name().equals(ParticipantType.Rotaractor.name())) {
+            SurveyRegistry.getRotaractInstance().registerFromJson(Const.projectDir + "\\src\\main\\resources\\rotaract_survey4-19-2020.json");
+            return ResponseEntity.ok(SurveyRegistry.getRotaractInstance().getMatchingQuestions());
+        } else {
+            SurveyRegistry.getRotaryInstance().registerFromJson(Const.projectDir + "\\src\\main\\resources\\rotarian_survey1-19-2020.json");
+            return ResponseEntity.ok(SurveyRegistry.getRotaryInstance().getMatchingQuestions());
+        }
     }
 }
