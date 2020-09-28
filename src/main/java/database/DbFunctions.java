@@ -23,7 +23,15 @@ public class DbFunctions {
     }
 
     public Rotarian readRotarian(final String id) {
-        return new Rotarian(database.readNodeProperties(Const.ROTARIAN, id));
+        Node node = database.readNode(Const.ROTARIAN, id);
+
+        if (node == null) {
+            return null;
+        }
+
+        return new Rotarian(database.readNodeProperties(node),
+                database.readNodeIdsFromRelationshipsOfType(node, Const.POSSIBLE_MATCH),
+                database.readNodeIdFromRelationshipsOfType(node, Const.MATCH));
     }
 
     public List<Rotarian> readRotarians(final boolean matched) {
@@ -31,7 +39,9 @@ public class DbFunctions {
         final List<Node> nodes = database.readMatchedNodes(Const.ROTARIAN, matched);
 
         for (Node node: nodes) {
-            rotarians.add(new Rotarian(database.readNodeProperties(node)));
+            rotarians.add(new Rotarian(database.readNodeProperties(node),
+                    database.readNodeIdsFromRelationshipsOfType(node, Const.POSSIBLE_MATCH),
+                    database.readNodeIdFromRelationshipsOfType(node, Const.MATCH)));
         }
         
         return rotarians;
@@ -73,7 +83,15 @@ public class DbFunctions {
     }
 
     public Rotaractor readRotaractor(final String id) {
-        return new Rotaractor(database.readNodeProperties(Const.ROTARACTOR, id));
+        Node node = database.readNode(Const.ROTARIAN, id);
+
+        if (node == null) {
+            return null;
+        }
+
+        return new Rotaractor(database.readNodeProperties(node),
+                database.readNodeIdsFromRelationshipsOfType(node, Const.POSSIBLE_MATCH),
+                database.readNodeIdFromRelationshipsOfType(node, Const.MATCH));
     }
 
     public List<Rotaractor> readRotaractors(final boolean matched) {
@@ -81,7 +99,9 @@ public class DbFunctions {
         final List<Node> nodes = database.readMatchedNodes(Const.ROTARACTOR, matched);
 
         for (Node node: nodes) {
-            rotaractors.add(new Rotaractor(database.readNodeProperties(node)));
+            rotaractors.add(new Rotaractor(database.readNodeProperties(node),
+                    database.readNodeIdsFromRelationshipsOfType(node, Const.POSSIBLE_MATCH),
+                    database.readNodeIdFromRelationshipsOfType(node, Const.MATCH)));
         }
 
         return rotaractors;
@@ -98,7 +118,9 @@ public class DbFunctions {
         List<Node> nodes = database.readNodesFromRelationshipsOfType(node, Const.POSSIBLE_MATCH);
 
         for (Node rotarian : nodes) {
-            rotarians.add(new Rotarian(database.readNodeProperties(rotarian)));
+            rotarians.add(new Rotarian(database.readNodeProperties(rotarian),
+                    database.readNodeIdsFromRelationshipsOfType(node, Const.POSSIBLE_MATCH),
+                    database.readNodeIdFromRelationshipsOfType(node, Const.MATCH)));
         }
 
         return rotarians;

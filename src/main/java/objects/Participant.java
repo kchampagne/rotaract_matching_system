@@ -26,6 +26,10 @@ public class Participant {
     protected String name;
     @JsonProperty(value = "surveyAnswers")
     private HashMap<String, Object> surveyAnswers;
+    @JsonProperty(value = "possibleMatches")
+    private List<String> possibleMatches;
+    @JsonProperty(value = "match")
+    private String match;
 
     protected String email;
     protected String timestamp;
@@ -36,7 +40,7 @@ public class Participant {
         this.type = type;
     }
 
-    public Participant(final ParticipantType type, final HashMap<String, Object> node) {
+    public Participant(final ParticipantType type, final HashMap<String, Object> node, final List<String> possibleMatches, final String match) {
         this.type = type;
 
         if (node.containsKey(Const.ID)) {
@@ -68,6 +72,9 @@ public class Participant {
                 this.surveyAnswers.put(key.substring(Const.SURVEY_ANSWER.length()+1), node.get(key));
             }
         }
+
+        this.possibleMatches = possibleMatches;
+        this.match = match;
     }
 
     public enum ParticipantType {

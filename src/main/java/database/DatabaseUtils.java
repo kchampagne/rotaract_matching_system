@@ -471,6 +471,46 @@ public class DatabaseUtils {
         return nodes;
     }
 
+    public List<String> readNodeIdsFromRelationshipsOfType(Node node, RelationshipType type){
+        List<String> nodeIds = new ArrayList<>();
+
+        try (Transaction tx = graphDb.beginTx()) {
+            tx.acquireReadLock(node);
+            node.getRelationships().iterator().forEachRemaining(rel ->{
+                if (rel.isType(type)) {
+                    nodeIds.add((String) rel.getOtherNode(node).getProperty(Const.ID));
+                }
+            });
+            tx.success();
+        } catch (Exception e) {
+            System.out.println("Unable to get relaionships. Msg:" + e.getMessage());
+        }
+
+        return nodeIds;
+    }
+
+    public String readNodeIdFromRelationshipsOfType(Node node, RelationshipType type){
+        List<String> nodeIds = new ArrayList<>();
+
+        try (Transaction tx = graphDb.beginTx()) {
+            tx.acquireReadLock(node);
+            node.getRelationships().iterator().forEachRemaining(rel ->{
+                if (rel.isType(type)) {
+                    nodeIds.add((String) rel.getOtherNode(node).getProperty(Const.ID));
+                }
+            });
+            tx.success();
+        } catch (Exception e) {
+            System.out.println("Unable to get relaionships. Msg:" + e.getMessage());
+        }
+
+        if (nodeIds.isEmpty()) {
+            return "";
+        } else {
+            return nodeIds.get(0);
+        }
+    }
+
     // TODO
     public List<Relationship> readAllRelationships(){
         List<Relationship> rels = new ArrayList<>();
