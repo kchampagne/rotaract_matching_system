@@ -1,0 +1,237 @@
+{
+	"info": {
+		"_postman_id": "ebe663b8-1c33-4401-a670-b2499bc7b796",
+		"name": "Rotaract Matching System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Initialize Database",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/data/initDefaults/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"data",
+						"initDefaults",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Rotarians",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"disabled": false
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:8080/rotarian/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rotarian",
+						""
+					],
+					"query": [
+						{
+							"key": "matched",
+							"value": "true",
+							"description": "defaults to false when not set",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Rotaractors",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:8080/rotaractor/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rotaractor",
+						""
+					],
+					"query": [
+						{
+							"key": "matched",
+							"value": "true",
+							"description": "defaults to false when not set",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Match",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "id",
+						"value": "0027-12-29T19:17:59.00Z_Virginia_Anderson_John_Tyler_Community_College_Rotaract_Club",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:8080/match/0027-12-29T19:17:59.00Z_Virginia_Anderson_John_Tyler_Community_College_Rotaract_Club/0012-12-27T11:44:00.00Z_Mark_Dispenza_Hammond,_LA",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"match",
+						"0027-12-29T19:17:59.00Z_Virginia_Anderson_John_Tyler_Community_College_Rotaract_Club",
+						"0012-12-27T11:44:00.00Z_Mark_Dispenza_Hammond,_LA"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ingest CSV",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/the88/Workspace/rotaract_matching_system/src/main/resources/rotarian_survey1-19-2020.csv",
+							"disabled": true
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/the88/Workspace/rotaract_matching_system/src/main/resources/rotaract_survey4-19-2020_edited.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/data/csv/?type=Rotaractor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"data",
+						"csv",
+						""
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Rotarian",
+							"description": "Must be capitalized",
+							"disabled": true
+						},
+						{
+							"key": "type",
+							"value": "Rotaractor",
+							"description": "Must be capitalized"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Questions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/data/questions/?type=Rotaractor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"data",
+						"questions",
+						""
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Rotaractor",
+							"description": "Must be capitalized"
+						},
+						{
+							"key": "type",
+							"value": "Rotarian",
+							"description": "Must be capitalized",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
