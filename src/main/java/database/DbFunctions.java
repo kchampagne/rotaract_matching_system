@@ -26,9 +26,9 @@ public class DbFunctions {
         return new Rotarian(database.readNodeProperties(Const.ROTARIAN, id));
     }
 
-    public List<Rotarian> readRotarians() {
+    public List<Rotarian> readRotarians(final boolean matched) {
         final List<Rotarian> rotarians = new ArrayList<>();
-        final List<Node> nodes = database.readNodes(Const.ROTARIAN);
+        final List<Node> nodes = database.readMatchedNodes(Const.ROTARIAN, matched);
 
         for (Node node: nodes) {
             rotarians.add(new Rotarian(database.readNodeProperties(node)));
@@ -76,9 +76,9 @@ public class DbFunctions {
         return new Rotaractor(database.readNodeProperties(Const.ROTARACTOR, id));
     }
 
-    public List<Rotaractor> readRotaractors() {
+    public List<Rotaractor> readRotaractors(final boolean matched) {
         final List<Rotaractor> rotaractors = new ArrayList<>();
-        final List<Node> nodes = database.readNodes(Const.ROTARACTOR);
+        final List<Node> nodes = database.readMatchedNodes(Const.ROTARACTOR, matched);
 
         for (Node node: nodes) {
             rotaractors.add(new Rotaractor(database.readNodeProperties(node)));
@@ -140,6 +140,7 @@ public class DbFunctions {
     }
 
     public void makeMatch(final String rotarianId, final String rotaractorId) {
+        final Label[] labels = new Label[] {Const.MATCHED};
         Node rotarian = database.readNode(Const.ROTARIAN, rotarianId);
         if (rotarian == null) {
             throw new IllegalArgumentException("ERROR :: There is no node for Rotarian with id of " + rotarianId);
@@ -152,6 +153,8 @@ public class DbFunctions {
         database.createRelationship(rotarian,
                 rotaractor,
                 Const.MATCH);
+        database.addLabels(rotarian, labels);
+        database.addLabels(rotaractor, labels);
     }
 
     private List<String> findPossibleMatches(HashMap<Double, String> values, double matchValue) {

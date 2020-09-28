@@ -14,8 +14,10 @@ public class RotarianController {
     private final DbFunctions dbFunctions = new DbFunctions();
 
     @GetMapping("")
-    public Response getRotarians() {
-        List<Rotarian> rotarians = dbFunctions.readRotarians();
+    public Response getRotarians(@RequestParam(name="matched", defaultValue="false") final String matchedStr) {
+        final boolean matched = Boolean.parseBoolean(matchedStr);
+
+        List<Rotarian> rotarians = dbFunctions.readRotarians(matched);
 
         if (rotarians.size() < 1) {
             return Response.noContent().build();

@@ -14,8 +14,10 @@ public class RotaractorController {
     private final DbFunctions dbFunctions = new DbFunctions();
 
     @GetMapping("")
-    public Response getRotaractors() {
-        List<Rotaractor> rotaractors = dbFunctions.readRotaractors();
+    public Response getRotaractors(@RequestParam(name="matched", defaultValue="false") final String matchedStr) {
+        final boolean matched = Boolean.parseBoolean(matchedStr);
+
+        List<Rotaractor> rotaractors = dbFunctions.readRotaractors(matched);
 
         if (rotaractors.size() < 1) {
             return Response.noContent().build();

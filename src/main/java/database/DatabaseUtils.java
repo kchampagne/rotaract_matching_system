@@ -221,7 +221,7 @@ public class DatabaseUtils {
     }
 
     public Node addLabels(Node node, Label[] labels) {
-        if (labels != null) {
+        if (labels == null) {
             return node;
         }
 
@@ -276,6 +276,41 @@ public class DatabaseUtils {
         catch (Exception e)
         {
             System.out.println("An error occurred while getting all " + label + "nodes. Msg :" + e.getMessage());
+        }
+
+        return nodes;
+    }
+
+    public List<Node> readMatchedNodes(Label primary, boolean matched) {
+        List<Node> nodes = new ArrayList<>();
+
+        try( Transaction tx = graphDb.beginTx()) {
+            tx.acquireReadLock(root);
+            ResourceIterator<Node> nodeIterator = graphDb.findNodes(primary);
+            while (nodeIterator.hasNext()) {
+                try {
+                    Node node = nodeIterator.next();
+                    if (node.hasLabel(Const.MATCHED)) {
+                        if (matched) {
+                            nodes.add(node);
+                        }
+                    } else {
+                        if (!matched) {
+                            nodes.add(node);
+                        }
+                    }
+                } catch (Exception e){
+                    System.out.println("ERROR :: " + e.getMessage());
+                }
+            }
+
+            tx.success();
+        } catch (Exception e) {
+            if (matched) {
+                System.out.println("An error occurred while getting all matched " + primary  + "nodes. Msg :" + e.getMessage());
+            } else {
+                System.out.println("An error occurred while getting all unmatched " + primary  + "nodes. Msg :" + e.getMessage());
+            }
         }
 
         return nodes;
@@ -348,18 +383,15 @@ public class DatabaseUtils {
         }
     }
 
-    public Relationship createRelationship(Node startNode, Node endNode, RelationshipType type){
+    public void createRelationship(Node startNode, Node endNode, RelationshipType type){
         try(Transaction tx = graphDb.beginTx()){
             tx.acquireWriteLock(startNode);
             tx.acquireWriteLock(endNode);
             Relationship rel = startNode.createRelationshipTo(endNode, type);
             rel.setProperty(Const.ID, UUID.randomUUID().toString());
             tx.success();
-            tx.close();
-            return rel;
         } catch(Exception e) {
             System.out.println("ERROR :: " + e.getMessage());
-            return null;
         }
     }
 
